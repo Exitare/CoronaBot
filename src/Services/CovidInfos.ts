@@ -33,7 +33,7 @@ export class CovidInfos {
         const embedMessage = new RichEmbed();
 
 
-        embedMessage.setTitle(`Covid 19 Update ${moment().format("MMMM Do YYYY, hh:mm:ss")}`);
+        embedMessage.setTitle(`Covid 19 Update ${moment().format("MMMM Do YYYY, HH:mm:ss")}`);
 
 
         embedMessage.setColor(Colors.CYAN);
