@@ -1,2 +1,2 @@
-export * from "./ChannelIDs";
+export * from "./ChannelID";
 export * from "./Colors";
