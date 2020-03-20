@@ -2,6 +2,8 @@ import { CommandContext } from "../Models";
 import { HttpService } from "../Services";
 import { ICommand, IField, ICountry } from "../Interfaces";
 import { Colors } from "../Constants";
+import { RichEmbed } from "discord.js";
+import moment from "moment";
 
 export class CovidInfo implements ICommand {
     commandNames = ["covid", "corona", "cv19"];
@@ -33,12 +35,25 @@ export class CovidInfo implements ICommand {
             if (counter >= 10)
                 break;
             fields.push(CovidInfo.addField(country));
-            console.log(fields);
             counter++;
         }
 
+        const embedMessage = new RichEmbed();
 
-      //  await ReplyService.sendMessages(commandContext, "Covid stats", "Covic stats", Colors.CYAN, fields);
+
+        embedMessage.setTitle(`Covid 19 Update ${moment().format("MMMM Do YYYY, HH:mm:ss")}`);
+
+
+        embedMessage.setColor(Colors.CYAN);
+        embedMessage.setTimestamp(new Date());
+        //  embedMessage.setDescription(discordMessage.message);
+
+        for (const field of fields)
+            embedMessage.addField(field.name, field.value);
+
+
+        commandContext.originalMessage.channel.send({ embed: embedMessage });
+        //  await ReplyService.sendMessages(commandContext, "Covid stats", "Covic stats", Colors.CYAN, fields);
 
         return;
     }
