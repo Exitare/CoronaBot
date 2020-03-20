@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export class TimerService {
 
   public static timers: Map<number, NodeJS.Timeout> = new Map();
@@ -22,5 +24,19 @@ export class TimerService {
 
     TimerService.timers.set(timerID, timeout);
     return;
+  }
+
+
+  public static async timeTillMidnight(): Promise<number> {
+        // Your moment
+        const mmt = moment().tz("Greenwich");
+
+        // Your moment at midnight
+        const mmtMidnight: moment.Moment = mmt.clone().endOf("day");
+
+        // Difference in minutes
+        const diffMilliseconds = mmtMidnight.diff(mmt, "millisecond");
+
+        return diffMilliseconds;
   }
 }

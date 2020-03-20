@@ -1,8 +1,8 @@
-import { HttpService} from ".";
+import { HttpService } from ".";
 import { ICountry, IField } from "../Interfaces";
-import { Colors } from "../Constants";
+import { Colors, ChannelID } from "../Constants";
 import client from "../CoronaBot";
-import { RichEmbed } from "discord.js";
+import { RichEmbed, TextChannel } from "discord.js";
 import moment from "moment";
 import { TimerService } from "./Timer.Service";
 
@@ -28,11 +28,7 @@ export class CovidInfos {
             counter++;
         }
 
-        const channelsIds: string[] = [];
-        channelsIds.push("690323414036382072");
         const embedMessage = new RichEmbed();
-
-
         embedMessage.setTitle(`Covid 19 Update ${moment().format("MMMM Do YYYY, HH:mm:ss")}`);
 
 
@@ -43,10 +39,9 @@ export class CovidInfos {
         for (const field of fields)
             embedMessage.addField(field.name, field.value);
 
-        client.discordClient.channels.get("690323414036382072").send(embedMessage);
+        (client.discordClient.channels.get(ChannelID.COVID_CHANNEL) as TextChannel).send(embedMessage);
 
         TimerService.rescheduleTimer(1, CovidInfos.getInfos, 10800000);
-        // await ReplyService.sendToChannels("Covid stats", "Covic stats", Colors.CYAN, fields);
     }
 
     private static addField(country: ICountry): IField {

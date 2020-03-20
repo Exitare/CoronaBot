@@ -6,7 +6,6 @@ import {  HttpService, TimerService } from "./Services";
 import { CovidInfos } from "./Services/CovidInfos";
 
 class CoronaBot {
- 
   public discordClient = new Discord.Client();
   private commandHandler = new CommandHandler(config.prefix);
   private greetingHandler = new GreetingHandler();
@@ -17,7 +16,6 @@ class CoronaBot {
       this.listen();
     });
   }
- 
 
   /** Pre-startup validation of the bot config. */
   private validateConfig(config: IBotConfig): void {
@@ -45,7 +43,7 @@ class CoronaBot {
   private async listen(): Promise<void> {
     this.discordClient.on("ready",async () => {
       console.log("Corona Info bot is online!");
-      const hourlyupdate = setTimeout(CovidInfos.getInfos, 10800000);
+      const hourlyupdate = setTimeout(CovidInfos.getInfos, await TimerService.timeTillMidnight());
 
       TimerService.timers.set(1, hourlyupdate);
     });
