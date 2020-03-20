@@ -7,13 +7,13 @@ import {
   HelpCommand,
   CovidInfo,
 } from "../Commands";
-import { ChannelIDs } from "../Constants";
+import { ChannelID } from "../Constants";
 
 /** Handler for bot commands issued by users. */
 export class CommandHandler {
   private commands: ICommand[];
 
-  private allowedChannels: string[] = [ChannelIDs.BOT_TEST, ChannelIDs.AVARIUS_HOOKS_CHANNEL];
+  private allowedChannels: string[] = [];
 
   private readonly prefix: string;
 
