@@ -2,7 +2,7 @@ import Discord, { Message, TextChannel } from "discord.js";
 import { config } from "./Config";
 import { IBotConfig } from "./Interfaces";
 import { CommandHandler, GreetingHandler } from "./Handler";
-import {  HttpService, TimerService } from "./Services";
+import { HttpService, TimerService } from "./Services";
 import { CovidInfos } from "./Services/CovidInfos";
 
 class CoronaBot {
@@ -25,7 +25,7 @@ class CoronaBot {
   }
 
   private async startBackgroundTasks(): Promise<void> {
-   // await CronService.dstCheckCronJob();
+    // await CronService.dstCheckCronJob();
     return;
   }
 
@@ -41,7 +41,7 @@ class CoronaBot {
   }
 
   private async listen(): Promise<void> {
-    this.discordClient.on("ready",async () => {
+    this.discordClient.on("ready", async () => {
       console.log("Corona Info bot is online!");
       const hourlyupdate = setTimeout(CovidInfos.getInfos, await TimerService.timeTillMidnight());
 
@@ -58,9 +58,9 @@ class CoronaBot {
       console.error("Discord client error!", e);
     });
 
-    this.discordClient.on("guildMemberAdd", member => {
+    /*this.discordClient.on("guildMemberAdd", member => {
       this.greetingHandler.handleGreeting(member);
-    });
+    }); */
 
     this.discordClient.login(config.token);
   }
