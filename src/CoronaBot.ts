@@ -43,7 +43,7 @@ class CoronaBot {
   private async listen(): Promise<void> {
     this.discordClient.on("ready", async () => {
       console.log("Corona Info bot is online!");
-      const hourlyupdate = setTimeout(CovidInfos.getInfos, await TimerService.timeTillMidnight());
+      const hourlyupdate = setTimeout(CovidInfos.getInfos, 10800000);
 
       TimerService.timers.set(1, hourlyupdate);
     });
