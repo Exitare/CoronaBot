@@ -35,7 +35,7 @@ export class CommandHandler {
     if (message.author.bot)
       return;
 
-    if (message.channel.type !== "dm")
+    if (message.channel.type !== "DM")
       if (!this.isAllowedChannel(message))
         return;
 

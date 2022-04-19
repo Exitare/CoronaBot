@@ -24,7 +24,7 @@ export class ReactionHandler {
   async failure(message: Message): Promise<MessageReaction> {
     if (!this.enableReactions) return;
 
-    await message.clearReactions();
+    await message.reactions.removeAll();
     return message.react(this.getRandom(FAILURE_REACTIONS));
   }
 
@@ -32,7 +32,7 @@ export class ReactionHandler {
   async expired(message: Message): Promise<MessageReaction> {
     if (!this.enableReactions) return;
 
-    await message.clearReactions();
+    await message.reactions.removeAll();
     return message.react(this.getRandom(EXPIRED_REACTIONS));
   }
 

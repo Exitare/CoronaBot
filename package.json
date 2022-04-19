@@ -1,24 +1,24 @@
 {
-  "name": "undying_discord_bot",
+  "name": "covid_discord_bot",
   "version": "0.1.0",
-  "description": "Undying discord bot",
+  "description": "Covid Discord Bot",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.undying-wow.com/cableguy/discord-bot"
+    "url": ""
   },
   "author": "Exitare",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon dist/server.js",
+    "start": "nodemon dist/CoronaBot.js",
     "bot": "concurrently --kill-others \"npm run start\" \"gulp\"",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "gulp": "gulp"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.26.1",
     "cheerio": "^1.0.0-rc.3",
     "cron": "^1.7.1",
-    "discord.js": "^11.5.1",
+    "discord.js": "^13.6.0",
     "dom-parser": "^0.1.6",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
@@ -31,18 +31,18 @@
     "@types/lodash": "^4.14.149",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.12",
-    "@types/node": "^12.0.2",
+    "@types/node": "^12.20.48",
     "concurrently": "^5.0.2",
-    "gulp": "^4.0.2",
+    "gulp": "^3.9.1",
     "gulp-cli": "^2.0.1",
-    "gulp-typescript": "^5.0.0-alpha.3",
+    "gulp-typescript": "^2.12.2",
     "husky": "^3.1.0",
     "nodemon": "^2.0.2",
-    "ts-jest": "^24.2.0",
+    "ts-jest": "^27.1.4",
     "ts-mockito": "^2.5.0",
     "ts-node": "^5.0.0",
     "tslint": "^5.20.1",
-    "typescript": "^2.9.2"
+    "typescript": "^4.6.3"
   },
   "husky": {
     "hooks": {

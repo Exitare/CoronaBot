@@ -2,7 +2,7 @@ import { CommandContext } from "../Models";
 import { HttpService } from "../Services";
 import { ICommand, IField, ICountry } from "../Interfaces";
 import { Colors } from "../Constants";
-import { RichEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import moment from "moment";
 
 export class CovidInfo implements ICommand {
@@ -38,7 +38,7 @@ export class CovidInfo implements ICommand {
             counter++;
         }
 
-        const embedMessage = new RichEmbed();
+        const embedMessage = new MessageEmbed();
 
 
         embedMessage.setTitle(`Covid 19 Update ${moment().format("MMMM Do YYYY, HH:mm:ss")}`);
@@ -52,7 +52,7 @@ export class CovidInfo implements ICommand {
             embedMessage.addField(field.name, field.value);
 
 
-        commandContext.originalMessage.channel.send({ embed: embedMessage });
+        commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
         //  await ReplyService.sendMessages(commandContext, "Covid stats", "Covic stats", Colors.CYAN, fields);
 
         return;

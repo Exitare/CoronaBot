@@ -1,26 +1,31 @@
-import Discord, { Message, TextChannel } from "discord.js";
+import Discord, { Message, Client, Intents } from "discord.js";
 import { config } from "./Config";
 import { IBotConfig } from "./Interfaces";
 import { CommandHandler, GreetingHandler } from "./Handler";
 import { HttpService, TimerService } from "./Services";
 import { CovidInfos } from "./Services/CovidInfos";
+import { INSPECT_MAX_BYTES } from "buffer";
 
 class CoronaBot {
-  public discordClient = new Discord.Client();
+  public discordClient = new Client({
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGES], partials: ["MESSAGE", "CHANNEL"]
+  });
   private commandHandler = new CommandHandler(config.prefix);
   private greetingHandler = new GreetingHandler();
 
   constructor() {
     this.validateConfig(config);
-    this.startBackgroundTasks().then(() => {
-      this.listen();
+    this.startBackgroundTasks().then(async () => {
+      await this.listen();
     });
   }
 
   /** Pre-startup validation of the bot config. */
   private validateConfig(config: IBotConfig): void {
-    const { baseUrl, token } = config;
-    if (!token || !baseUrl)
+    const token = config.token;
+    console.log(token);
+    if (!token)
       throw new Error("You need to specify your Discord bot token, base url and secret token!");
   }
 
@@ -31,13 +36,9 @@ class CoronaBot {
 
 
   private async setPresence(): Promise<void> {
-    this.discordClient.user.setPresence({
-      game: {
-        name: "Test bot",
-        url: "WATCHING"
-      },
-      status: "online"
-    });
+    this.discordClient.user.setPresence(
+      { activities: [{ name: "Covid tracking" }], status: "online" }
+    );
   }
 
   private async listen(): Promise<void> {
@@ -46,13 +47,13 @@ class CoronaBot {
       const hourlyupdate = setTimeout(CovidInfos.getInfos, 10800000);
 
       TimerService.timers.set(1, hourlyupdate);
+      this.setPresence();
     });
 
 
-    this.discordClient.on("message", (message: Message) => {
+    this.discordClient.on("messageCreate", (message) => {
       this.commandHandler.handleMessage(message);
     });
-
 
     this.discordClient.on("error", e => {
       console.error("Discord client error!", e);
@@ -65,6 +66,5 @@ class CoronaBot {
     this.discordClient.login(config.token);
   }
 }
-
 const client = new CoronaBot();
 export default client;
