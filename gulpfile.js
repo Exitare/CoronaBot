@@ -57,13 +57,3 @@ gulp.task('watch', () => {
 
 
 gulp.task('default', gulp.parallel('scripts', 'assets', 'html', 'yaml', 'xml', 'js'));
-
-/**
- serverToken: 123456
- token: NjAyMjM1NzcwNTYwMDUzMjcw.XTN6Eg.RfJ0aTpRlTb30MgHf1Rl63a08Ww
- base: https://avarius.net/api/discord/{token}
- request: {token}/{request} // ex: dailySummary
- direct messages
-
- nodeServer == Website object
- */
