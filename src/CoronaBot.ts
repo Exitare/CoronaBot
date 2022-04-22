@@ -24,7 +24,6 @@ class CoronaBot {
   /** Pre-startup validation of the bot config. */
   private validateConfig(config: IBotConfig): void {
     const token = config.token;
-    console.log(token);
     if (!token)
       throw new Error("You need to specify your Discord bot token, base url and secret token!");
   }
