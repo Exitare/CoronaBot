@@ -8,7 +8,7 @@ import { TimerService } from "./Timer.Service";
 
 export class CovidInfos {
     public static async getInfos(): Promise<void> {
-        const response: any = await HttpService.get();
+        const response: any = await HttpService.fetchCovidData();
 
         const countries: ICountry[] = [];
         for (const country of response)
