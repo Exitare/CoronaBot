@@ -18,13 +18,13 @@ export class CovidInfos {
 
 
 
-        const fields: IField[] = [];
+        const trackedCountries: IField[] = [];
 
         let counter = 0;
         for (const country of countries) {
             if (counter >= 10)
                 break;
-            fields.push(CovidInfos.addField(country));
+                trackedCountries.push(CovidInfos.addCountry(country));
             counter++;
         }
 
@@ -36,8 +36,8 @@ export class CovidInfos {
         embedMessage.setTimestamp(new Date());
         //  embedMessage.setDescription(discordMessage.message);
 
-        for (const field of fields)
-            embedMessage.addField(field.name, field.value);
+        for (const trackedCountry of trackedCountries)
+            embedMessage.addField(trackedCountry.name, trackedCountry.value);
 
         const channel: TextChannel = (await (client.discordClient.channels.fetch(ChannelID.COVID_CHANNEL))) as TextChannel;
 
@@ -49,18 +49,16 @@ export class CovidInfos {
         TimerService.rescheduleTimer(1, CovidInfos.getInfos, 10800000);
     }
 
-    private static addField(country: ICountry): IField {
+    private static addCountry(country: ICountry): IField {
         return {
             name: country.country,
-            value: `
-            New cases today: ${country.todayCases}
+            value: `New cases today: ${country.todayCases}
             New deaths today: ${country.todayDeaths}
             Total cases: ${country.cases}
             Total deaths: ${country.deaths}
             Recovered: ${country.recovered}
             Critical: ${country.critical}
             Active: ${country.active}
-            -----------------------------
             `,
         };
     }
