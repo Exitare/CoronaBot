@@ -32,8 +32,7 @@ class CoronaBot {
     // await CronService.dstCheckCronJob();
     return;
   }
-
-
+  
   private async setPresence(): Promise<void> {
     this.discordClient.user.setPresence(
       { activities: [{ name: "Covid tracking" }], status: "online" }

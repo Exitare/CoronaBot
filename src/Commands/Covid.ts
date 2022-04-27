@@ -16,7 +16,7 @@ export class CovidInfo implements ICommand {
         if (commandContext.args.length > 0)
             faqID = Number(commandContext.args.shift());
 
-        const response: any = await HttpService.fetchCovidData();
+        const response: ICountry[] = await HttpService.fetchCovidData();
         const embedMessage: MessageEmbed = await MessageService.CreateEmbdedMessage(response);
         
 

@@ -5,7 +5,7 @@ import moment from "moment";
 import { TimerService } from "./Timer.Service";
 
 export class MessageService {
-    public static async CreateEmbdedMessage(countryData: any): Promise<MessageEmbed> {
+    public static async CreateEmbdedMessage(countryData: ICountry[]): Promise<MessageEmbed> {
         const countries: ICountry[] = [];
         for (const country of countryData)
             countries.push(country);
@@ -46,9 +46,10 @@ export class MessageService {
             New deaths today: ${country.todayDeaths}
             Total cases: ${country.cases}
             Total deaths: ${country.deaths}
-            Recovered: ${country.recovered}
-            Critical: ${country.critical}
-            Active: ${country.active}
+            Total Recovered: ${country.recovered}
+            Total Critical: ${country.critical}
+            Total Active: ${country.active}
+            Total Tests: ${country.tests}
             `,
         };
     }

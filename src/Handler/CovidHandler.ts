@@ -2,11 +2,12 @@ import { TimerService, MessageService, HttpService } from "../Services/";
 import { ChannelID } from "../Constants";
 import client from "../CoronaBot";
 import { MessageEmbed, TextChannel } from "discord.js";
+import { ICountry } from '../Interfaces';
 
 export class CovidHandler {
 
     public static async SendCovidInfoToChannel(): Promise<any> {
-        var countryData = await HttpService.fetchCovidData();
+        var countryData: ICountry[] = await HttpService.fetchCovidData();
 
         var embedMessage: MessageEmbed = await MessageService.CreateEmbdedMessage(countryData);
 
