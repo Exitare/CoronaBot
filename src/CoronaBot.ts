@@ -2,9 +2,9 @@ import Discord, { Message, Client, Intents } from "discord.js";
 import { config } from "./Config";
 import { IBotConfig } from "./Interfaces";
 import { CommandHandler, GreetingHandler } from "./Handler";
-import { HttpService, TimerService } from "./Services";
-import { CovidInfos } from "./Services/CovidInfos";
+import { TimerService } from "./Services";
 import { INSPECT_MAX_BYTES } from "buffer";
+import { CovidHandler } from './Handler';
 
 class CoronaBot {
   public discordClient = new Client({
@@ -43,7 +43,7 @@ class CoronaBot {
   private async listen(): Promise<void> {
     this.discordClient.on("ready", async () => {
       console.log("Corona Info bot is online!");
-      const hourlyupdate = setTimeout(CovidInfos.getInfos, 10800000);
+      const hourlyupdate = setTimeout(CovidHandler.SendCovidInfoToChannel, 10800000);
 
       TimerService.timers.set(1, hourlyupdate);
       this.setPresence();

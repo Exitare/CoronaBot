@@ -7,7 +7,6 @@ import {
   HelpCommand,
   CovidInfo,
 } from "../Commands";
-import { ChannelID } from "../Constants";
 
 /** Handler for bot commands issued by users. */
 export class CommandHandler {

@@ -1,17 +1,13 @@
-import { HttpService } from ".";
 import { ICountry, IField } from "../Interfaces";
-import { Colors, ChannelID } from "../Constants";
-import client from "../CoronaBot";
-import { MessageEmbed, TextChannel } from "discord.js";
+import { Colors } from "../Constants";
+import { MessageEmbed } from "discord.js";
 import moment from "moment";
 import { TimerService } from "./Timer.Service";
 
-export class CovidInfos {
-    public static async getInfos(): Promise<void> {
-        const response: any = await HttpService.fetchCovidData();
-
+export class MessageService {
+    public static async CreateEmbdedMessage(countryData: any): Promise<MessageEmbed> {
         const countries: ICountry[] = [];
-        for (const country of response)
+        for (const country of countryData)
             countries.push(country);
 
         countries.sort((n1, n2) => n2.todayCases - n1.todayCases);
@@ -24,7 +20,7 @@ export class CovidInfos {
         for (const country of countries) {
             if (counter >= 10)
                 break;
-                trackedCountries.push(CovidInfos.addCountry(country));
+                trackedCountries.push(MessageService.addCountry(country));
             counter++;
         }
 
@@ -39,14 +35,8 @@ export class CovidInfos {
         for (const trackedCountry of trackedCountries)
             embedMessage.addField(trackedCountry.name, trackedCountry.value);
 
-        const channel: TextChannel = (await (client.discordClient.channels.fetch(ChannelID.COVID_CHANNEL))) as TextChannel;
 
-        if (!channel)
-            return;
-
-        channel.send({embeds: [embedMessage]});
-
-        TimerService.rescheduleTimer(1, CovidInfos.getInfos, 10800000);
+        return embedMessage;
     }
 
     private static addCountry(country: ICountry): IField {
