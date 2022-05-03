@@ -3,7 +3,7 @@ import { ChannelID } from "../Constants";
 import client from "../CoronaBot";
 import { MessageEmbed, TextChannel } from "discord.js";
 import { ICountry } from '../Interfaces';
-import { channel } from "diagnostics_channel";
+import {CountryCache} from '../Cache/Countries';
 
 export class CovidHandler {
 
@@ -16,6 +16,10 @@ export class CovidHandler {
 
         try {
             var countryData: ICountry[] = await HttpService.fetchCovidData();
+            
+            // Update cache
+            CountryCache.countries = countryData;
+
             var embedMessage: MessageEmbed = await MessageService.CreateMultiCountryMessage(countryData);
 
             channel.send({ embeds: [embedMessage] });

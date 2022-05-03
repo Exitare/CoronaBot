@@ -2,6 +2,7 @@ import { CommandContext } from "../Models";
 import { HttpService, MessageService } from "../Services";
 import { ICommand, IField, ICountry } from "../Interfaces";
 import { MessageEmbed } from "discord.js";
+import { CountryCache } from '../Cache/Countries';
 
 export class CovidInfo implements ICommand {
     commandNames = ["covid", "corona", "cv19"];
@@ -19,15 +20,24 @@ export class CovidInfo implements ICommand {
 
 
             let embedMessage: MessageEmbed;
-            const response: ICountry[] = await HttpService.fetchCovidData();
+            let countries: ICountry[] = CountryCache.countries;
+
+            if (countries.length === 0){
+                countries = await HttpService.fetchCovidData();
+                // Update only if empty. Cache will be refreshed when timer ticks
+                CountryCache.countries = countries;
+            }
+               
+
+
             if (!countryName) {
-                embedMessage = await MessageService.CreateMultiCountryMessage(response);
+                embedMessage = await MessageService.CreateMultiCountryMessage(countries);
                 commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
                 return;
             }
 
 
-            const country: ICountry = response.find(x => x.country === countryName);
+            const country: ICountry = countries.find(x => x.country === countryName);
 
             if (!country) {
                 commandContext.originalMessage.channel.send(`Could not find country with the name ${countryName}`);
