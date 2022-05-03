@@ -12,52 +12,57 @@ export class CountryInfo implements ICommand {
     }
 
     async run(commandContext: CommandContext): Promise<void> {
+        try {
+            const response: ICountry[] = await HttpService.fetchCovidData();
 
-        const response: ICountry[] = await HttpService.fetchCovidData();
-
-        const countryNames: string[] = [];
-        for (const country of response)
-            countryNames.push(country.country)
-
-
-
-        const embedMessage = new MessageEmbed();
-        embedMessage.setTitle(`Available Countries`);
-        embedMessage.setColor(Colors.CYAN);
-        embedMessage.setTimestamp(new Date());
-        //  embedMessage.setDescription(discordMessage.message);
-
-
-        let countryList: string = '';
-        for (const countryName of countryNames) {
-            if (countryList.length + countryName.length >= 1024) {
-                const countryNameField: IField = {
-                    name: "Countries",
-                    value: countryList,
-                } as IField;
-                embedMessage.addField(countryNameField.name, countryNameField.value);
-
-                countryList = countryName + `\n `;
-
-                continue;
+            const countryNames: string[] = [];
+            for (const country of response)
+                countryNames.push(country.country)
+    
+    
+    
+            const embedMessage = new MessageEmbed();
+            embedMessage.setTitle(`Available Countries`);
+            embedMessage.setColor(Colors.GREEN);
+            embedMessage.setTimestamp(new Date());
+            //  embedMessage.setDescription(discordMessage.message);
+    
+    
+            let countryList: string = '';
+            for (const countryName of countryNames) {
+                if (countryList.length + countryName.length >= 1024) {
+                    const countryNameField: IField = {
+                        name: "Countries",
+                        value: countryList,
+                    } as IField;
+                    embedMessage.addField(countryNameField.name, countryNameField.value);
+    
+                    countryList = countryName + `\n `;
+    
+                    continue;
+                }
+    
+    
+    
+                countryList += countryName + `\n`;
             }
-
-
-
-            countryList += countryName + `\n`;
+    
+            const countryNameField: IField = {
+                name: "Countries",
+                value: countryList,
+            } as IField;
+            embedMessage.addField(countryNameField.name, countryNameField.value);
+    
+            // Send message
+            commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
+    
+    
+            return;
+        } catch(ex){
+            commandContext.originalMessage.channel.send("An error occured. Please fix it!");
+            return;
         }
-
-        const countryNameField: IField = {
-            name: "Countries",
-            value: countryList,
-        } as IField;
-        embedMessage.addField(countryNameField.name, countryNameField.value);
-
-        // Send message
-        commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
-
-
-        return;
+       
     }
 
     hasPermissionToRun(parsedUserCommand: CommandContext): boolean {

@@ -11,34 +11,40 @@ export class CovidInfo implements ICommand {
     }
 
     async run(commandContext: CommandContext): Promise<void> {
-        let countryName: string;
+        try {
+            let countryName: string;
 
-        if (commandContext.args.length > 0)
-            countryName = commandContext.args.shift();
+            if (commandContext.args.length > 0)
+                countryName = commandContext.args.shift();
 
 
-        let embedMessage: MessageEmbed;
-        const response: ICountry[] = await HttpService.fetchCovidData();
-        if (!countryName) {
-            embedMessage = await MessageService.CreateMultiCountryMessage(response);
+            let embedMessage: MessageEmbed;
+            const response: ICountry[] = await HttpService.fetchCovidData();
+            if (!countryName) {
+                embedMessage = await MessageService.CreateMultiCountryMessage(response);
+                commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
+                return;
+            }
+
+
+            const country: ICountry = response.find(x => x.country === countryName);
+
+            if (!country) {
+                commandContext.originalMessage.channel.send(`Could not find country with the name ${countryName}`);
+                return;
+            }
+
+
+            embedMessage = await MessageService.CreateCountryMessage(country);
             commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
+
+
+            return;
+        } catch (ex) {
+            commandContext.originalMessage.channel.send("An error occured! Please fix it!");
             return;
         }
 
-
-        const country: ICountry = response.find(x => x.country === countryName);
-
-        if (!country) {
-            commandContext.originalMessage.channel.send(`Could not find country with the name ${countryName}`);
-            return;
-        }
-
-
-        embedMessage = await MessageService.CreateCountryMessage(country);
-        commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
-
-
-        return;
     }
 
     hasPermissionToRun(parsedUserCommand: CommandContext): boolean {
