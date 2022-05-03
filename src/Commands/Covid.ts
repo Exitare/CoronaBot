@@ -11,18 +11,33 @@ export class CovidInfo implements ICommand {
     }
 
     async run(commandContext: CommandContext): Promise<void> {
-        let faqID: number;
+        let countryName: string;
 
         if (commandContext.args.length > 0)
-            faqID = Number(commandContext.args.shift());
+            countryName = commandContext.args.shift();
 
+
+        let embedMessage: MessageEmbed;
         const response: ICountry[] = await HttpService.fetchCovidData();
-        const embedMessage: MessageEmbed = await MessageService.CreateEmbdedMessage(response);
-        
+        if (!countryName) {
+            embedMessage = await MessageService.CreateMultiCountryMessage(response);
+            commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
+            return;
+        }
 
 
+        const country: ICountry = response.find(x => x.country === countryName);
+
+        if (!country) {
+            commandContext.originalMessage.channel.send(`Could not find country with the name ${countryName}`);
+            return;
+        }
+
+
+        embedMessage = await MessageService.CreateCountryMessage(country);
         commandContext.originalMessage.channel.send({ embeds: [embedMessage] });
-    
+
+
         return;
     }
 

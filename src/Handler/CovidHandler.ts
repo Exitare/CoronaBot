@@ -9,7 +9,7 @@ export class CovidHandler {
     public static async SendCovidInfoToChannel(): Promise<any> {
         var countryData: ICountry[] = await HttpService.fetchCovidData();
 
-        var embedMessage: MessageEmbed = await MessageService.CreateEmbdedMessage(countryData);
+        var embedMessage: MessageEmbed = await MessageService.CreateMultiCountryMessage(countryData);
 
         const channel: TextChannel = (await (client.discordClient.channels.fetch(ChannelID.COVID_CHANNEL))) as TextChannel;
 

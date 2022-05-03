@@ -6,6 +6,7 @@ import {
   GreetCommand,
   HelpCommand,
   CovidInfo,
+  CountryInfo,
 } from "../Commands";
 
 /** Handler for bot commands issued by users. */
@@ -18,9 +19,9 @@ export class CommandHandler {
 
   constructor(prefix: string) {
     const commandClasses = [
-      // TODO: Add more commands here.
       new GreetCommand(),
       new CovidInfo(),
+      new CountryInfo(),
     ];
 
     this.commands = commandClasses;
