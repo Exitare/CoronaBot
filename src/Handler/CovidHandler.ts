@@ -15,11 +15,14 @@ export class CovidHandler {
             return;
 
         try {
-            var countryData: ICountry[] = await HttpService.fetchCovidData();
-            
-            // Update cache
-            CountryCache.countries = countryData;
+            const newCountryData: ICountry[] = await HttpService.fetchCovidData();
 
+              // Update cache only of new data is available
+            if (newCountryData.length !== 0)
+                CountryCache.countries = countryData;
+            
+             
+            var countryData: ICountry[] = CountryCache.countries
             var embedMessage: MessageEmbed = await MessageService.CreateMultiCountryMessage(countryData);
 
             channel.send({ embeds: [embedMessage] });
