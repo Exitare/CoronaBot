@@ -24,6 +24,8 @@ export class CovidInfo implements ICommand {
 
             if (countries.length === 0){
                 countries = await HttpService.fetchCovidData();
+
+                console.log(countries);
                 // Update only if empty. Cache will be refreshed when timer ticks
                 CountryCache.countries = countries;
             }
@@ -51,7 +53,7 @@ export class CovidInfo implements ICommand {
 
             return;
         } catch (ex) {
-            commandContext.originalMessage.channel.send("An error occured! Please fix it!");
+            commandContext.originalMessage.channel.send("An error occured in the covid info class! Please fix it!");
             return;
         }
 

@@ -29,7 +29,8 @@ export class CovidHandler {
 
 
         } catch (ex) {
-            channel.send("An error occured! Please fix it!")
+            console.log(ex);
+            channel.send("An error occured in the send covid info to channel! Please fix it!")
         } finally {
             TimerService.rescheduleTimer(1, CovidHandler.SendCovidInfoToChannel, 10800000);
         }

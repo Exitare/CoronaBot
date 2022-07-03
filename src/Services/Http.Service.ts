@@ -7,10 +7,13 @@ export class HttpService {
     public static async fetchCovidData(): Promise<ICountry[]> {
         try{
             return new Promise(async (resolve) => {
-                axios.get<ICountry[]>("https://corona.lmao.ninja/v2/countries")
+                axios.get<ICountry[]>("https://api.covid19api.com/summary")
                     .then((response: any) => {
                         resolve(response.data);
-                    }).catch((err: any) => console.log(err));
+                    }).catch(async (err: any) => {
+                        console.log(err);
+                        return [];
+                    });
             });
         }
         catch(ex){

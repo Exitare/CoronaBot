@@ -18,7 +18,9 @@ export class CountryInfo implements ICommand {
             const countryNames: string[] = CountryCache.countryNames;
 
             if (countryNames.length === 0) {
-                const response: ICountry[] = await HttpService.fetchCovidData();
+                const data = await HttpService.fetchCovidData();
+                console.log(data);
+                const response: ICountry[] = data;
 
                 for (const country of response)
                     countryNames.push(country.country)
@@ -61,7 +63,8 @@ export class CountryInfo implements ICommand {
 
             return;
         } catch (ex) {
-            commandContext.originalMessage.channel.send("An error occured. Please fix it!");
+            console.log(ex);
+            commandContext.originalMessage.channel.send("An error occured in the countries command. Please fix it!");
             return;
         }
 
