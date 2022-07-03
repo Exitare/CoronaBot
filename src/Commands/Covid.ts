@@ -1,6 +1,6 @@
 import { CommandContext } from "../Models";
 import { HttpService, MessageService } from "../Services";
-import { ICommand, IField, ICountry } from "../Interfaces";
+import { ICommand, IField, ICountry, ICovidData } from "../Interfaces";
 import { MessageEmbed } from "discord.js";
 import { CountryCache } from '../Cache/Countries';
 
@@ -23,11 +23,15 @@ export class CovidInfo implements ICommand {
             let countries: ICountry[] = CountryCache.countries;
 
             if (countries.length === 0){
-                countries = await HttpService.fetchCovidData();
-
-                console.log(countries);
-                // Update only if empty. Cache will be refreshed when timer ticks
-                CountryCache.countries = countries;
+                const data: ICovidData = await HttpService.fetchCovidData();
+             
+                if (data && data.Countries.length > 0){
+                    // Update cache only of new data is available
+                    CountryCache.countries = data.Countries;
+                    countries = data.Countries;
+                }
+                 
+               
             }
                
 
@@ -39,7 +43,7 @@ export class CovidInfo implements ICommand {
             }
 
 
-            const country: ICountry = countries.find(x => x.country === countryName);
+            const country: ICountry = countries.find(x => x.Country === countryName);
 
             if (!country) {
                 commandContext.originalMessage.channel.send(`Could not find country with the name ${countryName}`);

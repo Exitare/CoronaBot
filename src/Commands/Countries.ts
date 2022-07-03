@@ -1,6 +1,6 @@
 import { CommandContext } from "../Models";
-import { HttpService, MessageService } from "../Services";
-import { ICommand, IField, ICountry } from "../Interfaces";
+import { HttpService } from "../Services";
+import { ICommand, IField, ICountry, ICovidData } from "../Interfaces";
 import { MessageEmbed } from "discord.js";
 import { Colors } from "../Constants";
 import { CountryCache } from "../Cache/Countries";
@@ -18,13 +18,14 @@ export class CountryInfo implements ICommand {
             const countryNames: string[] = CountryCache.countryNames;
 
             if (countryNames.length === 0) {
-                const data = await HttpService.fetchCovidData();
-                console.log(data);
-                const response: ICountry[] = data;
+                const data: ICovidData = await HttpService.fetchCovidData();
 
-                for (const country of response)
-                    countryNames.push(country.country)
+                const response: ICovidData = data;
+
+                for (const country of response.Countries)
+                    countryNames.push(country.Country)
             }
+            
             const embedMessage = new MessageEmbed();
             embedMessage.setTitle(`Available Countries`);
             embedMessage.setColor(Colors.GREEN);

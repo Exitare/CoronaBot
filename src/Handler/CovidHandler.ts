@@ -2,7 +2,7 @@ import { TimerService, MessageService, HttpService } from "../Services/";
 import { ChannelID } from "../Constants";
 import client from "../CoronaBot";
 import { MessageEmbed, TextChannel } from "discord.js";
-import { ICountry } from '../Interfaces';
+import { ICountry, ICovidData } from '../Interfaces';
 import {CountryCache} from '../Cache/Countries';
 
 export class CovidHandler {
@@ -15,11 +15,11 @@ export class CovidHandler {
             return;
 
         try {
-            const newCountryData: ICountry[] = await HttpService.fetchCovidData();
+            const newCountryData: ICovidData = await HttpService.fetchCovidData();
 
               // Update cache only of new data is available
-            if (newCountryData.length !== 0)
-                CountryCache.countries = countryData;
+            if (newCountryData && newCountryData.Countries.length > 0)
+                CountryCache.countries = newCountryData.Countries;
             
              
             var countryData: ICountry[] = CountryCache.countries

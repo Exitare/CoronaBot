@@ -1,4 +1,4 @@
-import { ICountry } from "../Interfaces";
+import { ICountry, ICovidData } from "../Interfaces";
 
 
 export class CountryCache {

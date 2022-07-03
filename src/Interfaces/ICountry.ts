@@ -1,4 +1,4 @@
-export interface ICountry {
+/* export interface ICountry {
     updated: number;
     country: string;
     countryInfo: ICountryInfo;
@@ -30,4 +30,21 @@ export interface ICountryInfo {
     lat: number;
     long: number;
     flag: string;
+} */
+
+
+
+ export interface ICountry {
+    ID: string,
+    Country: string,
+    CountryCode: string,
+    Slug: string,
+    NewConfirmed: number,
+    TotalConfirmed: number,
+    NewDeaths: number,
+    TotalDeaths: number,
+    NewRecovered: number,
+    TotalRecovered: number,
+    Date: string,
+    Premium: {}
 }

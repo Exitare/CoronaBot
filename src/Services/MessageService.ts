@@ -9,7 +9,7 @@ export class MessageService {
         for (const country of countryData)
             countries.push(country);
 
-        countries.sort((n1, n2) => n2.todayCases - n1.todayCases);
+        countries.sort((n1, n2) => n2.NewConfirmed - n1.NewConfirmed);
 
 
 
@@ -55,15 +55,12 @@ export class MessageService {
 
     private static createCountryField(country: ICountry): IField {
         return {
-            name: country.country,
-            value: `New cases today: ${country.todayCases}
-            New deaths today: ${country.todayDeaths}
-            Total cases: ${country.cases}
-            Total deaths: ${country.deaths}
-            Total Recovered: ${country.recovered}
-            Total Critical: ${country.critical}
-            Total Active: ${country.active}
-            Total Tests: ${country.tests}
+            name: country.Country,
+            value: `New confirmed cases today: ${country.NewConfirmed}
+            New deaths today: ${country.NewDeaths}
+            Total cases: ${country.TotalConfirmed}
+            Total deaths: ${country.TotalDeaths}
+            Total Recovered: ${country.TotalRecovered}
             `,
         } as IField;
     }
